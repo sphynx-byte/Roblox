@@ -58,7 +58,7 @@ local Input = Tab:CreateInput({
 Tab:CreateButton({
     Name = "Submit",
     Callback = function()
-        if enteredKey ~= KEY then
+        if _G.EnteredKey ~= KEY then
             Rayfield:Notify({
                 Title = "Error",
                 Content = "Wrong Key!",
@@ -78,7 +78,7 @@ Tab:CreateButton({
 
         task.wait(1)
 
-        Rayfield:Destroy() -- ✅ TARUH DI SINI
+        Rayfield:Destroy()
 
         local url = LOADERS[placeId]
 
