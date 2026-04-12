@@ -87,3 +87,17 @@ Tab:CreateButton({
         end)
     end,
 })
+
+Tab:CreateButton({
+    Name = "Join Discord",
+    Callback = function()
+        if syn then
+            syn.request({
+                Url = "https://discord.gg/nQmhZVbG7v",
+                Method = "GET"
+            })
+        else
+            setclipboard("https://discord.gg/nQmhZVbG7v")
+        end
+    end,
+})
