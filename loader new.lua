@@ -56,6 +56,20 @@ local Input = Tab:CreateInput({
 })
 
 Tab:CreateButton({
+    Name = "Join Discord",
+    Callback = function()
+        if syn then
+            syn.request({
+                Url = "https://discord.gg/nQmhZVbG7v",
+                Method = "GET"
+            })
+        else
+            setclipboard("https://discord.gg/nQmhZVbG7v")
+        end
+    end,
+})
+
+Tab:CreateButton({
     Name = "Submit",
     Callback = function()
         if _G.EnteredKey ~= KEY then
@@ -88,16 +102,4 @@ Tab:CreateButton({
     end,
 })
 
-Tab:CreateButton({
-    Name = "Join Discord",
-    Callback = function()
-        if syn then
-            syn.request({
-                Url = "https://discord.gg/nQmhZVbG7v",
-                Method = "GET"
-            })
-        else
-            setclipboard("https://discord.gg/nQmhZVbG7v")
-        end
-    end,
-})
+
