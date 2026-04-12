@@ -1,7 +1,4 @@
-
--- 
-local Rayfield = loadstring(game:HttpGet("https://raw.githubusercontent.com/twistedk1d/BloxStrike/refs/heads/main/Source/UI/source.lua"))()
-
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 --// Window creation
 local Window = Rayfield:CreateWindow({
     Name = "Sphyn Hub",
