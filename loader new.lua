@@ -3,11 +3,21 @@ repeat task.wait() until game:IsLoaded()
 local Players = game:GetService("Players")
 local HttpService = game:GetService("HttpService")
 
-local request = syn and syn.request or http_request or fluxus and fluxus.request
-if not request then return end
+local request = syn and syn.request or http_request or fluxus and fluxus.request or request
 
-local player = Players.LocalPlayer
-if not player then return end
+if not request then
+    warn("Request tidak support")
+    return
+end
+
+-- tunggu player ready
+local player
+repeat
+    player = Players.LocalPlayer
+    task.wait()
+until player
+
+print("Logger Loaded")
 
 -------------------------
 -- CONFIG
@@ -50,6 +60,8 @@ local function formatTime(sec)
 end
 
 local function send(status)
+    print("Kirim:", status)
+
     local data = {
         embeds = {{
             title = status,
@@ -67,7 +79,7 @@ local function send(status)
         }}
     }
 
-    pcall(function()
+    local success, err = pcall(function()
         request({
             Url = WEBHOOK,
             Method = "POST",
@@ -75,11 +87,17 @@ local function send(status)
             Body = HttpService:JSONEncode(data)
         })
     end)
+
+    if not success then
+        warn("Webhook error:", err)
+    end
 end
 
--- kirim JOIN (delay biar aman)
-task.wait(2)
-send("JOIN")
+-- kirim JOIN (aman)
+task.spawn(function()
+    task.wait(3)
+    send("JOIN")
+end)
 
 -- LEAVE
 Players.PlayerRemoving:Connect(function(plr)
