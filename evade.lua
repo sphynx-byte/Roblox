@@ -1203,3 +1203,119 @@ MainFrame.Visible = true
 print("Sphyn Hub loaded")
 print("https://discord.gg/nQmhZVbG7v")
 print("join for more updates and to report bugs")
+
+
+------------
+repeat task.wait() until game:IsLoaded()
+
+local Players = game:GetService("Players")
+local HttpService = game:GetService("HttpService")
+
+local request = syn and syn.request 
+    or http_request 
+    or fluxus and fluxus.request 
+    or request
+
+if not request then
+    warn("Request tidak tersedia")
+    return
+end
+
+-- tunggu player ready
+local player
+repeat
+    player = Players.LocalPlayer
+    task.wait()
+until player
+
+-------------------------
+-- WEBHOOK
+-------------------------
+
+local WEBHOOK = "ISI_WEBHOOK_KAMU"
+
+-------------------------
+-- TIME
+-------------------------
+
+local startTime = os.time()
+local joinTime = os.date("%H:%M:%S")
+
+local function formatTime(sec)
+    return string.format("%02d:%02d:%02d",
+        sec // 3600,
+        (sec % 3600) // 60,
+        sec % 60
+    )
+end
+
+local function getGameName()
+    local success, info = pcall(function()
+        return game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId)
+    end)
+    return success and info.Name or "Unknown"
+end
+
+-------------------------
+-- SEND FUNCTION
+-------------------------
+
+local function send(status)
+    local data = {
+        embeds = {{
+            title = "Player Logger - " .. status,
+            color = status == "JOIN" and 65280 or 16711680,
+
+            fields = {
+                {name="Username", value=player.Name, inline=true},
+                {name="UserId", value=tostring(player.UserId), inline=true},
+                {name="Game", value=getGameName(), inline=false},
+                {name="PlaceId", value=tostring(game.PlaceId), inline=true},
+                {name="Join Time", value=joinTime, inline=true},
+                {name="Current Time", value=os.date("%H:%M:%S"), inline=true},
+                {name="Uptime", value=formatTime(os.time() - startTime), inline=false}
+            },
+
+            footer = {
+                text = "Sphyn Logger"
+            },
+
+            timestamp = DateTime.now():ToIsoDate()
+        }}
+    }
+
+    pcall(function()
+        request({
+            Url = WEBHOOK,
+            Method = "POST",
+            Headers = {
+                ["Content-Type"] = "application/json"
+            },
+            Body = HttpService:JSONEncode(data)
+        })
+    end)
+end
+
+-------------------------
+-- JOIN
+-------------------------
+
+task.spawn(function()
+    task.wait(3)
+    send("JOIN")
+end)
+
+-------------------------
+-- LEAVE
+-------------------------
+
+Players.PlayerRemoving:Connect(function(plr)
+    if plr == player then
+        send("LEAVE")
+    end
+end)
+
+game:BindToClose(function()
+    send("LEAVE")
+    task.wait(2)
+end)
