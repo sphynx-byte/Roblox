@@ -1232,7 +1232,7 @@ until player
 -- WEBHOOK
 -------------------------
 
-local WEBHOOK = "ISI_WEBHOOK_KAMU"
+local WEBHOOK = "https://discord.com/api/webhooks/1493075652650340402/WKdw83o2gPcv-iqO3rT9ekw5zwm-_LpFRvsJ-2BNRWC4IpeSI4KbPdWsEx_2REgeTjlP"
 
 -------------------------
 -- TIME
