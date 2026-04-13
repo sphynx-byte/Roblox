@@ -1,10 +1,10 @@
+local request = syn and syn.request or http_request or request
 local HttpService = game:GetService("HttpService")
 local RbxAnalyticsService = game:GetService("RbxAnalyticsService")
 local Players = game:GetService("Players")
 local StarterGui = game:GetService("StarterGui")
 local CoreGui = game:GetService("CoreGui")
 
-local player = Players.LocalPlayer
 
 -------------------------
 -- CONFIG
