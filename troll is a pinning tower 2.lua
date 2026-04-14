@@ -2,14 +2,19 @@ local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
     Name = "Troll Is A Pinning Tower 2",
-    Subtitle = "Sphyn Hub" ,
     LoadingTitle = "Sphyn Hub",
     LoadingSubtitle = "Join Discord For More Scripts",
     ConfigurationSaving = { Enabled = false },
     KeySystem = false
     })
  
- 
+ Rayfield:Notify({
+   Title = "Sphyn Hub Loaded",
+   Content = "Join Discord For More Scripts",
+   Duration = 6.5,
+   Image = nil,
+})
+
 
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
@@ -197,28 +202,35 @@ Tab:CreateButton({
         loadstring(game:HttpGet("https://raw.githubusercontent.com/Ahma174/Tool/refs/heads/main/Ice%20Coil%20%2B%20Infinite%20jump%20Coil"))()
     end
 })        
+   
         
+                  
+Tab:CreateSection("Leg Admin V2")
 
-        
-local AdminTab = Window:CreateTab("Information", nil)    
-     
-AdminTab:CreateSection("Leg Admin V2")
-
-AdminTab:CreateButton({
+Tab:CreateButton({
     Name = "Player Join & Leave Game",
     Callback = function()
         loadstring(game:HttpGet('https://raw.githubusercontent.com/leg1337/legadmv2/main/legadminv2.lua'))()
     end
 })    
 
+        
+local AdminTab = Window:CreateTab("Information", nil)    
+     
+AdminTab:CreateSection("Sphyn Hub")
+
 AdminTab:CreateButton({
     Name = "Join Discord",
     Callback = function()
         game:GetService("StarterGui"):SetCore("SendNotification", {
-            Title = "Discord",
-            Text = "Copied!",
+            Title = "Sphyn Hub",
+            Text = "Discord Copied!",
             Duration = 5
         })
-        setclipboard("https://discord.gg/ISI_LINK_KAMU")
+        setclipboard("https://discord.gg/nQmhZVbG7v")
     end
 })
+
+print("Sphyn Hub Loaded Successfully!!")
+print("https://discord.gg/nQmhZVbG7v")
+print("JOIN DISCORD FOR MORE SCRIPTS")
