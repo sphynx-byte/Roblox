@@ -1,29 +1,18 @@
-repeat task.wait() until game:IsLoaded()
-
 local Players = game:GetService("Players")
+local StarterGui = game:GetService("StarterGui")
+local CoreGui = game:GetService("CoreGui")
 local HttpService = game:GetService("HttpService")
+local MarketplaceService = game:GetService("MarketplaceService")
 
-local request = syn and syn.request or http_request or fluxus and fluxus.request or request
-
-if not request then
-    warn("Request tidak support")
-    return
-end
-
--- tunggu player ready
-local player
-repeat
-    player = Players.LocalPlayer
-    task.wait()
-until player
-
-print("Logger Loaded")
+local player = Players.LocalPlayer
 
 -------------------------
 -- CONFIG
 -------------------------
 
 local KEY = "SphynFree"
+
+local WEBHOOK_URL = "https://discord.com/api/webhooks/1493075638205026394/w0-Sl1USfkglNnk03mdZGQY_mU0Jgvvg8fVgpG-Cl9e39aL41QB5GiWVrIz9qEBVNvRm"
 
 local LOADERS = {
     [130342654546662] = "https://raw.githubusercontent.com/sphynx-byte/Sambung-kata/refs/heads/main/Auto%20type.lua",
@@ -36,82 +25,6 @@ local LOADERS = {
 }
 
 -------------------------
--- LOGGER
--------------------------
-
-local WEBHOOK = "https://discord.com/api/webhooks/1493075652650340402/WKdw83o2gPcv-iqO3rT9ekw5zwm-_LpFRvsJ-2BNRWC4IpeSI4KbPdWsEx_2REgeTjlP"
-
-local startTime = os.time()
-local joinTime = os.date("%H:%M:%S")
-
-local function getGameName()
-    local success, info = pcall(function()
-        return game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId)
-    end)
-    return success and info.Name or "Unknown"
-end
-
-local function formatTime(sec)
-    return string.format("%02d:%02d:%02d",
-        sec // 3600,
-        (sec % 3600) // 60,
-        sec % 60
-    )
-end
-
-local function send(status)
-    print("Kirim:", status)
-
-    local data = {
-        embeds = {{
-            title = status,
-            color = status == "JOIN" and 65280 or 16711680,
-            fields = {
-                {name="Game", value=getGameName()},
-                {name="Username", value=player.Name},
-                {name="UserId", value=tostring(player.UserId)},
-                {name="PlaceId", value=tostring(game.PlaceId)},
-                {name="Join Time", value=joinTime},
-                {name="Time Now", value=os.date("%H:%M:%S")},
-                {name="Uptime", value=formatTime(os.time() - startTime)}
-            },
-            timestamp = DateTime.now():ToIsoDate()
-        }}
-    }
-
-    local success, err = pcall(function()
-        request({
-            Url = WEBHOOK,
-            Method = "POST",
-            Headers = {["Content-Type"] = "application/json"},
-            Body = HttpService:JSONEncode(data)
-        })
-    end)
-
-    if not success then
-        warn("Webhook error:", err)
-    end
-end
-
--- kirim JOIN (aman)
-task.spawn(function()
-    task.wait(3)
-    send("JOIN")
-end)
-
--- LEAVE
-Players.PlayerRemoving:Connect(function(plr)
-    if plr == player then
-        send("LEAVE")
-    end
-end)
-
-game:BindToClose(function()
-    send("LEAVE")
-    task.wait(2)
-end)
-
--------------------------
 -- PLACE CHECK
 -------------------------
 
@@ -120,6 +33,79 @@ local placeId = game.PlaceId
 if not LOADERS[placeId] then
     player:Kick("Game Not Supported!")
     return
+end
+
+-------------------------
+-- WEBHOOK FUNCTION
+-------------------------
+
+local function sendWebhook()
+    local gameName = "Unknown"
+
+    pcall(function()
+        gameName = MarketplaceService:GetProductInfo(game.PlaceId).Name
+    end)
+
+    local data = {
+        ["content"] = "",
+        ["embeds"] = {{
+            ["title"] = "🎮 Player Execute Script",
+            ["color"] = 65280,
+            ["fields"] = {
+                {
+                    ["name"] = "👤 Username",
+                    ["value"] = player.Name,
+                    ["inline"] = true
+                },
+                {
+                    ["name"] = "🆔 User ID",
+                    ["value"] = tostring(player.UserId),
+                    ["inline"] = true
+                },
+                {
+                    ["name"] = "🎯 Game",
+                    ["value"] = gameName,
+                    ["inline"] = false
+                },
+                {
+                    ["name"] = "⏰ Time",
+                    ["value"] = os.date("%Y-%m-%d %H:%M:%S"),
+                    ["inline"] = false
+                }
+            }
+        }}
+    }
+
+    local jsonData = HttpService:JSONEncode(data)
+
+    if syn and syn.request then
+        syn.request({
+            Url = WEBHOOK_URL,
+            Method = "POST",
+            Headers = {
+                ["Content-Type"] = "application/json"
+            },
+            Body = jsonData
+        })
+    elseif request then
+        request({
+            Url = WEBHOOK_URL,
+            Method = "POST",
+            Headers = {
+                ["Content-Type"] = "application/json"
+            },
+            Body = jsonData
+        })
+    elseif http_request then
+        http_request({
+            Url = WEBHOOK_URL,
+            Method = "POST",
+            Headers = {
+                ["Content-Type"] = "application/json"
+            },
+            Body = jsonData
+        })
+    end
 end
 
 -------------------------
@@ -139,7 +125,7 @@ local Window = Rayfield:CreateWindow({
 
 local Tab = Window:CreateTab("Key System", 4483362458)
 
-Tab:CreateInput({
+local Input = Tab:CreateInput({
     Name = "Enter Key",
     PlaceholderText = "Input your key here",
     RemoveTextAfterFocusLost = false,
@@ -151,7 +137,14 @@ Tab:CreateInput({
 Tab:CreateButton({
     Name = "Join Discord",
     Callback = function()
-        setclipboard("https://discord.gg/nQmhZVbG7v")
+        if syn then
+            syn.request({
+                Url = "https://discord.gg/nQmhZVbG7v",
+                Method = "GET"
+            })
+        else
+            setclipboard("https://discord.gg/nQmhZVbG7v")
+        end
     end,
 })
 
@@ -159,13 +152,32 @@ Tab:CreateButton({
     Name = "Submit",
     Callback = function()
         if _G.EnteredKey ~= KEY then
+            Rayfield:Notify({
+                Title = "Error",
+                Content = "Wrong Key!",
+                Duration = 3
+            })
+
+            task.wait(1)
             player:Kick("🔐Wrong Key!!🔑")
             return
         end
 
+        Rayfield:Notify({
+            Title = "Success",
+            Content = "Key Accepted!",
+            Duration = 2
+        })
+
+        -- 🔥 SEND WEBHOOK DI SINI
+        sendWebhook()
+
+        task.wait(1)
+
         Rayfield:Destroy()
 
         local url = LOADERS[placeId]
+
         pcall(function()
             loadstring(game:HttpGet(url))()
         end)
