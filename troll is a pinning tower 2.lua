@@ -1,8 +1,8 @@
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-    Name = "Troll Is A Pinning Tower 2",
-    LoadingTitle = "Sphyn Hub",
+    Name = "Sphyn Hub",
+    LoadingTitle = "Troll Is A Pinning Tower 2",
     LoadingSubtitle = "Join Discord For More Scripts",
     ConfigurationSaving = { Enabled = false },
     KeySystem = false
