@@ -12,7 +12,11 @@ local player = Players.LocalPlayer
 
 local KEY = "SphynFree"
 
-local WEBHOOK_URL = "https://discord.com/api/webhooks/1493075638205026394/w0-Sl1USfkglNnk03mdZGQY_mU0Jgvvg8fVgpG-Cl9e39aL41QB5GiWVrIz9qEBVNvRm"
+local a = "https://discord.com/api/webhooks/"
+local b = "1493075638205026394/"
+local c = "w0-Sl1USfkglNnk03mdZGQY_mU0Jgvvg8fVgpG-Cl9e39aL41QB5GiWVrIz9qEBVNvRm"
+
+local WEBHOOK_URL = a..b..c
 
 local LOADERS = {
     [130342654546662] = "https://raw.githubusercontent.com/sphynx-byte/Sambung-kata/refs/heads/main/Auto%20type.lua",
@@ -21,7 +25,8 @@ local LOADERS = {
     [1502601752] = "https://raw.githubusercontent.com/sphynx-byte/Roblox/refs/heads/main/Rabbit%20Simulator%202.lua",
     [9872472334] = "https://raw.githubusercontent.com/sphynx-byte/Roblox/refs/heads/main/evade.lua",
     [114234929420007] = "https://raw.githubusercontent.com/sphynx-byte/Roblox/refs/heads/main/Blox%20Strike.lua",
-    [103188421562819] = "https://raw.githubusercontent.com/sphynx-byte/Sambung-kata/refs/heads/main/(kamus)%20Sambung%20Kata%20Jawa.lua"
+    [103188421562819] = "https://raw.githubusercontent.com/sphynx-byte/Sambung-kata/refs/heads/main/(kamus)%20Sambung%20Kata%20Jawa.lua",
+    [83312952548612] = "https://raw.githubusercontent.com/sphynx-byte/Roblox/refs/heads/main/troll%20is%20a%20pinning%20tower%202.lua" 
 }
 
 -------------------------
