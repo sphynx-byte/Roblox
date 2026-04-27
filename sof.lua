@@ -13,10 +13,7 @@ local function decode(str, key)
 end
 
 --// LOAD UI (ASLI)
-local Rayfield = loadstring(game:HttpGet(
-    decode("\217\215\207\53\245\225\136\81\194\202\201\44\243\168\137\19\212\205\206\106\244\186\222\24\216\198\215\33",
-           "\126\177\163\187\69\134\219\167")
-))()
+local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
 
 --// WINDOW
 local Window = Rayfield:CreateWindow({
